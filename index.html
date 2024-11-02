@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Legends Hub</title>
+    <style>
+        /* Reset and General Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; color: #fff; background: linear-gradient(to bottom, #004080, #001F54); overflow-x: hidden; }
+
+        /* Header with curved corners */
+        header {
+            position: relative;
+            text-align: center;
+            background-color: #2A2A2A;
+            color: #fff;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            animation: slideIn 1s ease-in;
+        }
+        h1 { font-size: 2.8em; }
+        header p { margin-top: 10px; font-size: 1.2em; }
+
+        /* Rotating cricket bat */
+        .cricket-bat {
+            position: absolute;
+            top: 40%; /* Adjusted to give space */
+            left: 50%;
+            width: 100px;
+            height: 200px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/9/96/Cricket_Bat.png') no-repeat center;
+            background-size: contain;
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: rotateBat 5s linear infinite;
+        }
+
+        /* Ball orbiting */
+        .cricket-ball {
+            position: absolute;
+            top: 40%; /* Adjusted to give space */
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/3/39/Cricket_ball.svg') no-repeat center;
+            background-size: cover;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbit 5s linear infinite;
+            box-shadow: 0 0 20px blue;
+        }
+
+        /* Flames effect */
+        .flame {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(to bottom, blue, cyan);
+            border-radius: 50%;
+            animation: flameAnimation 0.5s linear infinite;
+        }
+
+        /* Section Styling */
+        section { padding: 40px; text-align: center; animation: fadeIn 1s ease-in; }
+        .player-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .player-card {
+            width: 200px; background: #fff; color: #333; padding: 20px;
+            border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .player-card:hover { transform: scale(1.05); }
+        .player-card img { width: 100%; border-radius: 10px; }
+
+        /* Static Map Container */
+        #map-container {
+            display: flex; justify-content: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px; border-radius: 10px; margin: 20px auto;
+            width: 90%; max-width: 800px;
+        }
+        .map-item { width: 150px; height: 150px; border-radius: 10px; overflow: hidden; }
+
+        /* Fan Zone Styling */
+        #fan-zone {
+            background: #1A1A1A;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        #fan-zone h2 { color: #ffcc00; }
+        #fan-form { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        #fan-form input, #fan-form textarea {
+            width: 80%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;
+            transition: border 0.3s;
+        }
+        #fan-form input:focus, #fan-form textarea:focus {
+            border: 1px solid #ffcc00;
+            outline: none;
+        }
+        #fan-form button {
+            padding: 10px 20px; background: #ffcc00; color: #000;
+            border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s;
+        }
+        #fan-form button:hover { background: #e6b800; }
+
+        /* Additional Content Section */
+        #info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+        }
+        #info h2 { color: #ffcc00; margin-bottom: 15px; }
+        #info p { color: #fff; margin-bottom: 10px; }
+
+        /* Animations */
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes rotateBat { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes orbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateX(80px) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateX(80px) rotate(-360deg); }
+        }
+        @keyframes flameAnimation {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header with rotating bat -->
+    <header>
+        <h1>Cricket Legends Hub</h1>
+        <p>Explore the world of cricket and its legendary players</p>
+        <div class="cricket-bat"></div>
+        <div class="cricket-ball">
+            <div class="flame" style="top: -5px; left: 15px;"></div>
+            <div class="flame" style="top: -5px; left: 5px;"></div>
+            <div class="flame" style="top: -5px; right: 15px;"></div>
+        </div>
+    </header>
+
+    <!-- Space between header and player section -->
+    <div style="height: 80px;"></div> <!-- This creates space -->
+
+    <!-- Home Section -->
+    <section id="home">
+        <h2>Welcome to Cricket Legends Hub</h2>
+        <p>Discover the icons who made history in the world of cricket.</p>
+    </section>
+
+    <!-- Player Profiles Section -->
+    <section id="profiles">
+        <h2>Featured Players</h2>
+        <div class="player-grid">
+            <!-- Player Cards -->
+            <div class="player-card">
+                <a href="players/virat.html">
+                <img src="images/virat.jpeg" alt="Virat Kohli">
+                <h3>Virat Kohli</h3>
+                </a>
+                <p>Known for his aggression and run-scoring ability.</p>
+            </div>
+            <div class="player-card">
+                <a href="players/sachin.html">
+                <img src="images/Sachin.jpeg" alt="Sachin Tendulkar">
+                <h3>Sachin Tendulkar</h3></a>
+                <p>Widely regarded as one of the greatest batsmen in cricket.</p>
+            </div>
+            <div class="player-card">
+                <a href="players/steve.html">
+                <img src="images/steve.jpeg" alt="Steve Smith">
+                <h3>Steve Smith</h3></a>
+                <p>A modern-day batting maestro with a unique style.</p>
+            </div>
+            <div class="player-card">
+                <a href="players/joe.html">
+                <img src="images/jjoe.jpeg" alt="Joe Root">
+                <h3>Joe Root</h3></a>
+                <p>England's dependable batsman with a classic technique.</p>
+            </div>
+            <div class="player-card">
+                <a href="players/martin.html">
+                <img src="images/martin.jpeg" alt="Martin Guptill">
+                <h3>Martin Guptill</h3></a>
+                <p>New Zealand's explosive opener known for his big hits.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Information Section -->
+    <section id="info">
+        <h2>About Cricket</h2>
+        <p>Cricket is a bat-and-ball game played between two teams of eleven players on a circular field. The objective of the game is to score more runs than the opposing team. A run is scored when a batsman hits the ball and runs between the wickets, while the opposing team attempts to field the ball and prevent runs.</p>
+        <p>Cricket has a rich history dating back to the 16th century, and it has evolved into various formats, including Test cricket, One Day Internationals (ODIs), and Twenty20 (T20) matches.</p>
+        <h3>Famous Cricketers</h3>
+        <p>Throughout its history, cricket has seen numerous legends. Players like Sir Donald Bradman, Sachin Tendulkar, and Virat Kohli have left an indelible mark on the sport. Their skills and achievements continue to inspire new generations of cricketers.</p>
+    </section>
+
+    <!-- Static Map Section with Locations -->
+    <section id="map">
+        <h2>Player Hometowns</h2>
+        <div id="map-container">
+            <div class="map-item">
+                <img src="map/virat.png" alt="Delhi, India (Virat Kohli)">
+            </div>
+            <div class="map-item">
+                <img src="map/sachin.png" alt="Mumbai, India (Sachin Tendulkar)">
+            </div>
+            <div class="map-item">
+                <img src="map/steve.png" alt="Sydney, Australia (Steve Smith)">
+            </div>
+            <div class="map-item">
+                <img src="map/joe.png" alt="Sheffield, UK (Joe Root)">
+            </div>
+            <div class="map-item">
+                <img src="map/martin.png" alt="Auckland, New Zealand (Martin Guptill)">
+            </div>
+        </div>
+    </section>
+
+    <!-- Fan Zone Section -->
+    <section id="fan-zone">
+        <h2>Fan Zone</h2>
+        <p>Share your favorite cricket moments and vote on top players!</p>
+        <form id="fan-form">
+            <input type="text" placeholder="Your Favorite Player" required>
+            <textarea placeholder="Why they are the best..." required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fanForm = document.getElementById("fan-form");
+            fanForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                alert("Thank you for your submission!");
+                fanForm.reset();
+            });
+        });
+    </script>
+
+</body>
+</html>
